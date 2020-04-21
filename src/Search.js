@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as BooksAPI from './BooksAPI';
 import ListBooks from './ListBooks';
 import {DebounceInput} from 'react-debounce-input';
+import PropTypes from 'prop-types';
 
 class Search extends Component {
   state = {
@@ -62,5 +63,10 @@ class Search extends Component {
     )
   }
 }
+
+Search.propTypes = {
+  shelfList: PropTypes.array.isRequired,
+  onBookMove: PropTypes.func.isRequired,
+};
 
 export default Search

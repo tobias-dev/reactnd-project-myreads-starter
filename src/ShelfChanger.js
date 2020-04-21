@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const noShelf = {
   id: 'none',
@@ -32,5 +33,11 @@ const ShelfChanger = (props) => {
     </div>
   )
 }
+
+ShelfChanger.propTypes = {
+  book: PropTypes.object.isRequired,
+  shelfList: PropTypes.array.isRequired,
+  onBookMove: PropTypes.func.isRequired,
+};
 
 export default ShelfChanger
