@@ -2,7 +2,7 @@ import React from 'react';
 import ShelfChanger from './ShelfChanger'
 
 const Book = (props) => {
-  const { book, shelfList } = props;
+  const { book, shelfList, onBookMove } = props;
   const { title, authors, imageLinks } = book;
 
   return (
@@ -18,6 +18,7 @@ const Book = (props) => {
         <ShelfChanger
           book={book}
           shelfList={shelfList}
+          onBookMove={onBookMove}
         />
       </div>
       <div className="book-title">{title}</div>

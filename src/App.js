@@ -27,20 +27,45 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     showSearchPage: false,
-    books: [],
+    booksInShelf: {},
   }
 
   componentDidMount() {
     BooksAPI.getAll()
       .then((books) => {
+        // Store books with IDs as keys, so that they can be easily accessed by ID
+        const booksWithId = {};
+        books.forEach((book) => {
+          booksWithId[book.id] = book;
+        })
         this.setState(() => ({
-          books
+          booksInShelf: booksWithId
         }))
       })
   }
 
+  moveBook = (book, newShelfId) => {
+    BooksAPI.update(book, newShelfId)
+      .then(() => {
+        this.setState((prevState) => {
+          const bookId = book.id;
+          this.isShelf(newShelfId) ?
+            prevState.booksInShelf[bookId].shelf = newShelfId : // Update shelf
+            delete prevState.booksInShelf.bookId; // Delete book if not in shelf anymore
+          return prevState;
+        });
+      })
+  }
+
   getBooksByShelf = (shelfId) => {
-    return this.state.books.filter((book) => book.shelf === shelfId);
+    const { booksInShelf } = this.state;
+    return Object.keys(booksInShelf)
+      .map((bookId) => booksInShelf[bookId])
+      .filter((book) => book.shelf === shelfId);
+  }
+
+  isShelf = (shelfId) => {
+    return shelfList.map((shelf) => shelf.id).includes(shelfId);
   }
 
   render() {
@@ -80,6 +105,7 @@ class BooksApp extends React.Component {
                       shelf={shelf}
                       books={this.getBooksByShelf(shelf.id)}
                       shelfList={shelfList}
+                      onBookMove={this.moveBook}
                     />
                   )
                 )}
