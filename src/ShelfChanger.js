@@ -15,7 +15,7 @@ const ShelfChanger = (props) => {
   
   return (
     <div className="book-shelf-changer">
-      <select value={book.shelf} onChange={handleShelfChange}>
+      <select value={book.shelf || noShelf.id} onChange={handleShelfChange}>
         {shelfList.map((shelf) => {
           return (
             <option

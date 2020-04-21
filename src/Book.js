@@ -12,7 +12,7 @@ const Book = (props) => {
           style={{
             width: 128,
             height: 188,
-            backgroundImage: `url("${imageLinks.thumbnail}")`
+            backgroundImage: imageLinks ? `url("${imageLinks.thumbnail}")` : ''
           }}
         />
         <ShelfChanger
@@ -22,7 +22,7 @@ const Book = (props) => {
         />
       </div>
       <div className="book-title">{title}</div>
-      <div className="book-authors">{authors.join(', ')}</div>
+      <div className="book-authors">{(authors || []).join(', ')}</div>
     </div>
   )
 }
