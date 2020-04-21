@@ -7,7 +7,17 @@ const noShelf = {
 };
 
 const ShelfChanger = (props) => {
-  const { book, shelfList, onBookMove } = props;
+  const { book, shelfList, booksInShelf, onBookMove } = props;
+
+  const getShelf = (book) => {
+    if(book.hasOwnProperty('shelf')) {
+      return book.shelf
+    }
+    if(Object.keys(booksInShelf).includes(book.id)) {
+      return booksInShelf[book.id].shelf;
+    }
+    return noShelf.id;
+  };
 
   const handleShelfChange = (e) => {
     const shelfId = e.target.value;
@@ -16,7 +26,7 @@ const ShelfChanger = (props) => {
   
   return (
     <div className="book-shelf-changer">
-      <select value={book.shelf || noShelf.id} onChange={handleShelfChange}>
+      <select value={getShelf(book)} onChange={handleShelfChange}>
         {shelfList.map((shelf) => {
           return (
             <option
@@ -37,6 +47,7 @@ const ShelfChanger = (props) => {
 ShelfChanger.propTypes = {
   book: PropTypes.object.isRequired,
   shelfList: PropTypes.array.isRequired,
+  booksInShelf: PropTypes.object.isRequired,
   onBookMove: PropTypes.func.isRequired,
 };
 

@@ -71,11 +71,14 @@ class BooksApp extends React.Component {
   }
 
   render() {
+    const { booksInShelf } = this.state;
+
     return (
       <div className="app">
         {this.state.showSearchPage ? (
           <Search
             shelfList={shelfList}
+            booksInShelf={booksInShelf}
             onBookMove={this.moveBook}
           />
         ) : (
@@ -91,6 +94,7 @@ class BooksApp extends React.Component {
                       shelf={shelf}
                       books={this.getBooksByShelf(shelf.id)}
                       shelfList={shelfList}
+                      booksInShelf={booksInShelf}
                       onBookMove={this.moveBook}
                     />
                   )

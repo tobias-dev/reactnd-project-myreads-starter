@@ -10,7 +10,7 @@ class Shelf extends Component {
   }
 
   render() {
-    const { shelf, books, shelfList, onBookMove } = this.props;
+    const { shelf, books, shelfList, booksInShelf, onBookMove } = this.props;
 
     return (
       <div className="bookshelf">
@@ -20,6 +20,7 @@ class Shelf extends Component {
             books={books}
             shelfList={shelfList}
             onBookMove={onBookMove}
+            booksInShelf={booksInShelf}
           />
         </div>
       </div>
@@ -31,6 +32,7 @@ Shelf.propTypes = {
   shelf: PropTypes.object.isRequired,
   books: PropTypes.array.isRequired,
   shelfList: PropTypes.array.isRequired,
+  booksInShelf: PropTypes.object.isRequired,
   onBookMove: PropTypes.func.isRequired,
 };
 
