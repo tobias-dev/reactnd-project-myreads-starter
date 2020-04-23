@@ -18,9 +18,9 @@ class Shelf extends Component {
     } = this.props;
 
     return (
-      <div className='bookshelf'>
-        <h2 className='bookshelf-title'>{shelf.label}</h2>
-        <div className='bookshelf-books'>
+      <div className="bookshelf">
+        <h2 className="bookshelf-title">{shelf.label}</h2>
+        <div className="bookshelf-books">
           <ListBooks
             booksThisList={booksThisShelf}
             shelfList={shelfList}

@@ -39,15 +39,15 @@ class Search extends Component {
     const { shelfList, booksAnyShelf, onBookMove } = this.props;
 
     return (
-      <div className='search-books'>
-        <div className='search-books-bar'>
-          <Link to='/'>
-            <button className='close-search'>Close</button>
+      <div className="search-books">
+        <div className="search-books-bar">
+          <Link to="/">
+            <button className="close-search">Close</button>
           </Link>
-          <div className='search-books-input-wrapper'>
+          <div className="search-books-input-wrapper">
             <DebounceInput
-              type='text'
-              placeholder='Search by title or author'
+              type="text"
+              placeholder="Search by title or author"
               value={query}
               debounceTimeout={150}
               className={hasSearchError ? 'error' : ''}
@@ -55,7 +55,7 @@ class Search extends Component {
             />
           </div>
         </div>
-        <div className='search-books-results'>
+        <div className="search-books-results">
           {!hasSearchError && (
             <ListBooks
               booksThisList={books}

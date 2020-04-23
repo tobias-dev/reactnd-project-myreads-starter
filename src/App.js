@@ -66,16 +66,16 @@ class BooksApp extends React.Component {
     const { booksInShelf } = this.state;
 
     return (
-      <div className='app'>
+      <div className="app">
         <Route
           exact
-          path='/'
+          path="/"
           render={() => (
-            <div className='list-books'>
-              <div className='list-books-title'>
+            <div className="list-books">
+              <div className="list-books-title">
                 <h1>MyReads</h1>
               </div>
-              <div className='list-books-content'>
+              <div className="list-books-content">
                 <div>
                   {shelfList.map((shelf) => (
                     <Shelf
@@ -89,8 +89,8 @@ class BooksApp extends React.Component {
                   ))}
                 </div>
               </div>
-              <div className='open-search'>
-                <Link to='/search'>
+              <div className="open-search">
+                <Link to="/search">
                   <button>Add a book</button>
                 </Link>
               </div>
@@ -98,7 +98,7 @@ class BooksApp extends React.Component {
           )}
         />
         <Route
-          path='/search'
+          path="/search"
           render={() => (
             <Search
               shelfList={shelfList}
