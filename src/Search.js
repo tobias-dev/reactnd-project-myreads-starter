@@ -45,7 +45,7 @@ class Search extends Component {
               placeholder="Search by title or author"
               value={query}
               debounceTimeout={150}
-              style={hasSearchError ? {color: '#ce4844'} : {}}
+              className={hasSearchError ? 'error' : ''}
               onChange={this.handleSearch}
             />
           </div>
