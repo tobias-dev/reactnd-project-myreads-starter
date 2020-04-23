@@ -3,16 +3,16 @@ import Book from './Book'
 import PropTypes from 'prop-types';
 
 const ListBooks = (props) => {
-  const { books, shelfList, booksInShelf, onBookMove } = props;
+  const { booksThisList, shelfList, booksAnyShelf, onBookMove } = props;
   
   return (
     <ol className="books-grid">
-      {books.map((book) => (
+      {booksThisList.map((book) => (
         <li key={book.id}>
           <Book
             book={book}
             shelfList={shelfList}
-            booksInShelf={booksInShelf}
+            booksAnyShelf={booksAnyShelf}
             onBookMove={onBookMove}
           />
         </li>
@@ -22,9 +22,9 @@ const ListBooks = (props) => {
 }
 
 ListBooks.propTypes = {
-  books: PropTypes.array.isRequired,
+  booksThisList: PropTypes.array.isRequired,
   shelfList: PropTypes.array.isRequired,
-  booksInShelf: PropTypes.object.isRequired,
+  booksAnyShelf: PropTypes.object.isRequired,
   onBookMove: PropTypes.func.isRequired,
 };
 

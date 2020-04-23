@@ -6,21 +6,21 @@ class Shelf extends Component {
 
   shouldComponentUpdate(nextProps) {
     // Only update if a book is added or removed
-    return this.props.books.length !== nextProps.books.length;
+    return this.props.booksThisShelf.length !== nextProps.booksThisShelf.length;
   }
 
   render() {
-    const { shelf, books, shelfList, booksInShelf, onBookMove } = this.props;
+    const { shelf, shelfList, booksThisShelf, booksAnyShelf, onBookMove } = this.props;
 
     return (
       <div className="bookshelf">
         <h2 className="bookshelf-title">{shelf.label}</h2>
         <div className="bookshelf-books">
           <ListBooks
-            books={books}
+            booksThisList={booksThisShelf}
             shelfList={shelfList}
+            booksAnyShelf={booksAnyShelf}
             onBookMove={onBookMove}
-            booksInShelf={booksInShelf}
           />
         </div>
       </div>
@@ -30,9 +30,9 @@ class Shelf extends Component {
 
 Shelf.propTypes = {
   shelf: PropTypes.object.isRequired,
-  books: PropTypes.array.isRequired,
   shelfList: PropTypes.array.isRequired,
-  booksInShelf: PropTypes.object.isRequired,
+  booksThisShelf: PropTypes.array.isRequired,
+  booksAnyShelf: PropTypes.object.isRequired,
   onBookMove: PropTypes.func.isRequired,
 };
 

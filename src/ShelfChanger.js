@@ -7,14 +7,14 @@ const noShelf = {
 };
 
 const ShelfChanger = (props) => {
-  const { book, shelfList, booksInShelf, onBookMove } = props;
+  const { book, shelfList, booksAnyShelf, onBookMove } = props;
 
   const getShelf = (book) => {
     if(book.hasOwnProperty('shelf')) {
-      return book.shelf
+      return book.shelf;
     }
-    if(Object.keys(booksInShelf).includes(book.id)) {
-      return booksInShelf[book.id].shelf;
+    if(Object.keys(booksAnyShelf).includes(book.id)) {
+      return booksAnyShelf[book.id].shelf;
     }
     return noShelf.id;
   };

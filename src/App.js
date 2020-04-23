@@ -28,7 +28,7 @@ class BooksApp extends React.Component {
      * pages, as well as provide a good URL they can bookmark and share.
      */
     showSearchPage: false,
-    booksInShelf: {},
+    booksInShelf: {}, // Contains books that are assigned to any shelf
   }
 
   componentDidMount() {
@@ -78,7 +78,7 @@ class BooksApp extends React.Component {
         {this.state.showSearchPage ? (
           <Search
             shelfList={shelfList}
-            booksInShelf={booksInShelf}
+            booksAnyShelf={booksInShelf}
             onBookMove={this.moveBook}
           />
         ) : (
@@ -92,9 +92,9 @@ class BooksApp extends React.Component {
                     <Shelf
                       key={shelf.id}
                       shelf={shelf}
-                      books={this.getBooksByShelf(shelf.id)}
                       shelfList={shelfList}
-                      booksInShelf={booksInShelf}
+                      booksThisShelf={this.getBooksByShelf(shelf.id)}
+                      booksAnyShelf={booksInShelf}
                       onBookMove={this.moveBook}
                     />
                   )
