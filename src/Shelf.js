@@ -3,19 +3,24 @@ import ListBooks from './ListBooks';
 import PropTypes from 'prop-types';
 
 class Shelf extends Component {
-
   shouldComponentUpdate(nextProps) {
     // Only update if a book is added or removed
     return this.props.booksThisShelf.length !== nextProps.booksThisShelf.length;
   }
 
   render() {
-    const { shelf, shelfList, booksThisShelf, booksAnyShelf, onBookMove } = this.props;
+    const {
+      shelf,
+      shelfList,
+      booksThisShelf,
+      booksAnyShelf,
+      onBookMove,
+    } = this.props;
 
     return (
-      <div className="bookshelf">
-        <h2 className="bookshelf-title">{shelf.label}</h2>
-        <div className="bookshelf-books">
+      <div className='bookshelf'>
+        <h2 className='bookshelf-title'>{shelf.label}</h2>
+        <div className='bookshelf-books'>
           <ListBooks
             booksThisList={booksThisShelf}
             shelfList={shelfList}
@@ -24,7 +29,7 @@ class Shelf extends Component {
           />
         </div>
       </div>
-    )
+    );
   }
 }
 
@@ -36,4 +41,4 @@ Shelf.propTypes = {
   onBookMove: PropTypes.func.isRequired,
 };
 
-export default Shelf
+export default Shelf;

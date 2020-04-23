@@ -10,10 +10,10 @@ const ShelfChanger = (props) => {
   const { book, shelfList, booksAnyShelf, onBookMove } = props;
 
   const getShelf = (book) => {
-    if(book.hasOwnProperty('shelf')) {
+    if (book.hasOwnProperty('shelf')) {
       return book.shelf;
     }
-    if(Object.keys(booksAnyShelf).includes(book.id)) {
+    if (Object.keys(booksAnyShelf).includes(book.id)) {
       return booksAnyShelf[book.id].shelf;
     }
     return noShelf.id;
@@ -23,26 +23,22 @@ const ShelfChanger = (props) => {
     const shelfId = e.target.value;
     onBookMove(book, shelfId);
   };
-  
+
   return (
-    <div className="book-shelf-changer">
+    <div className='book-shelf-changer'>
       <select value={getShelf(book)} onChange={handleShelfChange}>
         {shelfList.map((shelf) => {
           return (
-            <option
-              key={shelf.id}
-              value={shelf.id}>
-                {shelf.label}
+            <option key={shelf.id} value={shelf.id}>
+              {shelf.label}
             </option>
-          )
+          );
         })}
-        <option value={noShelf.id}>
-          {noShelf.label}
-        </option>
+        <option value={noShelf.id}>{noShelf.label}</option>
       </select>
     </div>
-  )
-}
+  );
+};
 
 ShelfChanger.propTypes = {
   book: PropTypes.object.isRequired,
@@ -51,4 +47,4 @@ ShelfChanger.propTypes = {
   onBookMove: PropTypes.func.isRequired,
 };
 
-export default ShelfChanger
+export default ShelfChanger;

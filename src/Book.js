@@ -7,13 +7,14 @@ const Book = (props) => {
   const { title, authors, imageLinks } = book;
 
   return (
-    <div className="book">
-      <div className="book-top">
-        <div className="book-cover"
+    <div className='book'>
+      <div className='book-top'>
+        <div
+          className='book-cover'
           style={{
             width: 128,
             height: 188,
-            backgroundImage: imageLinks ? `url("${imageLinks.thumbnail}")` : ''
+            backgroundImage: imageLinks ? `url("${imageLinks.thumbnail}")` : '',
           }}
         />
         <ShelfChanger
@@ -23,11 +24,11 @@ const Book = (props) => {
           onBookMove={onBookMove}
         />
       </div>
-      <div className="book-title">{title}</div>
-      <div className="book-authors">{(authors || []).join(', ')}</div>
+      <div className='book-title'>{title}</div>
+      <div className='book-authors'>{(authors || []).join(', ')}</div>
     </div>
-  )
-}
+  );
+};
 
 Book.propTypes = {
   book: PropTypes.object.isRequired,
@@ -36,4 +37,4 @@ Book.propTypes = {
   onBookMove: PropTypes.func.isRequired,
 };
 
-export default Book
+export default Book;
