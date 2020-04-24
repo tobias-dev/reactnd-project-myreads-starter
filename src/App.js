@@ -1,7 +1,7 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI';
-import Shelf from './Shelf';
+import Shelves from './Shelves';
 import Search from './Search';
 import './App.css';
 
@@ -22,7 +22,7 @@ const shelves = [
 
 class BooksApp extends React.Component {
   state = {
-    booksInShelves: [], // Contains books that are assigned to any shelf
+    booksInShelves: [], // Contains books that are assigned to a shelf
   };
 
   componentDidMount() {
@@ -63,10 +63,6 @@ class BooksApp extends React.Component {
     });
   };
 
-  getBooksByShelf = (shelfId) => {
-    return this.state.booksInShelves.filter((b) => b.shelf === shelfId);
-  };
-
   isShelf = (shelfId) => {
     return shelves.map((shelf) => shelf.id).includes(shelfId);
   };
@@ -80,29 +76,11 @@ class BooksApp extends React.Component {
           exact
           path="/"
           render={() => (
-            <div className="list-books">
-              <div className="list-books-title">
-                <h1>MyReads</h1>
-              </div>
-              <div className="list-books-content">
-                <div>
-                  {shelves.map((shelf) => (
-                    <Shelf
-                      key={shelf.id}
-                      shelf={shelf}
-                      shelves={shelves}
-                      books={this.getBooksByShelf(shelf.id)}
-                      onBookMove={this.moveBook}
-                    />
-                  ))}
-                </div>
-              </div>
-              <div className="open-search">
-                <Link to="/search">
-                  <button>Add a book</button>
-                </Link>
-              </div>
-            </div>
+            <Shelves
+              shelves={shelves}
+              books={booksInShelves}
+              onBookMove={this.moveBook}
+            />
           )}
         />
         <Route

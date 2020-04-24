@@ -19,32 +19,43 @@ class Search extends Component {
         query,
       }),
       () => {
-        let newSearchState = {
-          searchedBooks: [],
-          hasSearchError: false,
-        };
-        query.length > 0 &&
-          BooksAPI.search(query).then((books) => {
-            const isValidSearch =
-              typeof books !== 'undefined' && !books.hasOwnProperty('error');
-            if (isValidSearch) {
-              this.mapBooksToShelves(books); // Searched books don't contain shelf attributes, so map them
-              newSearchState.searchedBooks = books || [];
-            } else {
-              newSearchState.hasSearchError = true;
-            }
-          });
-        this.setState(() => newSearchState);
+        query.length > 0
+          ? this.performSearch(query)
+          : this.setState(() => ({
+              searchedBooks: [],
+              hasSearchError: false,
+            }));
       }
     );
   };
 
-  mapBooksToShelves = (books) => {
+  performSearch = (query) => {
+    BooksAPI.search(query).then((searchedBooks) => {
+      const isValidSearch =
+        typeof searchedBooks !== 'undefined' &&
+        !searchedBooks.hasOwnProperty('error');
+      if (isValidSearch) {
+        this.mapBooksToShelves(searchedBooks);
+        this.setState(() => ({
+          searchedBooks: searchedBooks || [],
+          hasSearchError: false,
+        }));
+      } else {
+        this.setState(() => ({
+          searchedBooks: [],
+          hasSearchError: true,
+        }));
+      }
+    });
+  };
+
+  mapBooksToShelves = (searchedBooks) => {
     const { booksInShelves } = this.props;
+    // Searched books don't contain shelf attributes, so map them
     booksInShelves.map((bookInShelf) =>
-      books
-        .filter((book) => book.id === bookInShelf.id)
-        .map((book) => (book.shelf = bookInShelf.shelf))
+      searchedBooks
+        .filter((searchedBook) => searchedBook.id === bookInShelf.id)
+        .map((searchedBook) => (searchedBook.shelf = bookInShelf.shelf))
     );
   };
 
@@ -85,7 +96,7 @@ class Search extends Component {
 
 Search.propTypes = {
   shelves: PropTypes.array.isRequired,
-  booksInShelves: PropTypes.object.isRequired,
+  booksInShelves: PropTypes.array.isRequired,
   onBookMove: PropTypes.func.isRequired,
 };
 
