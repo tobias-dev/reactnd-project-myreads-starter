@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI';
-import ListBooks from './ListBooks';
+import Books from './Books';
 import { DebounceInput } from 'react-debounce-input';
 import PropTypes from 'prop-types';
 
 class Search extends Component {
   state = {
     query: '',
-    books: [],
+    searchedBooks: [],
     hasSearchError: false,
   };
 
@@ -20,23 +20,37 @@ class Search extends Component {
       }),
       () => {
         let newSearchState = {
-          books: [],
+          searchedBooks: [],
           hasSearchError: false,
         };
         query.length > 0 &&
           BooksAPI.search(query).then((books) => {
-            typeof books === 'undefined' || books.hasOwnProperty('error')
-              ? (newSearchState.hasSearchError = true)
-              : (newSearchState.books = books || []);
+            const isValidSearch =
+              typeof books !== 'undefined' && !books.hasOwnProperty('error');
+            if (isValidSearch) {
+              this.mapBooksToShelves(books); // Searched books don't contain shelf attributes, so map them
+              newSearchState.searchedBooks = books || [];
+            } else {
+              newSearchState.hasSearchError = true;
+            }
           });
         this.setState(() => newSearchState);
       }
     );
   };
 
+  mapBooksToShelves = (books) => {
+    const { booksInShelves } = this.props;
+    booksInShelves.map((bookInShelf) =>
+      books
+        .filter((book) => book.id === bookInShelf.id)
+        .map((book) => (book.shelf = bookInShelf.shelf))
+    );
+  };
+
   render() {
-    const { query, books, hasSearchError } = this.state;
-    const { shelfList, booksAnyShelf, onBookMove } = this.props;
+    const { query, searchedBooks, hasSearchError } = this.state;
+    const { shelves, onBookMove } = this.props;
 
     return (
       <div className="search-books">
@@ -57,10 +71,9 @@ class Search extends Component {
         </div>
         <div className="search-books-results">
           {!hasSearchError && (
-            <ListBooks
-              booksThisList={books}
-              shelfList={shelfList}
-              booksAnyShelf={booksAnyShelf}
+            <Books
+              books={searchedBooks}
+              shelves={shelves}
               onBookMove={onBookMove}
             />
           )}
@@ -71,8 +84,8 @@ class Search extends Component {
 }
 
 Search.propTypes = {
-  shelfList: PropTypes.array.isRequired,
-  booksAnyShelf: PropTypes.object.isRequired,
+  shelves: PropTypes.array.isRequired,
+  booksInShelves: PropTypes.object.isRequired,
   onBookMove: PropTypes.func.isRequired,
 };
 

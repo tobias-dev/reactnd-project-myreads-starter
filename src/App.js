@@ -5,7 +5,7 @@ import Shelf from './Shelf';
 import Search from './Search';
 import './App.css';
 
-const shelfList = [
+const shelves = [
   {
     id: 'currentlyReading',
     label: 'Currently Reading',
@@ -22,13 +22,13 @@ const shelfList = [
 
 class BooksApp extends React.Component {
   state = {
-    booksInShelfs: [], // Contains books that are assigned to any shelf
+    booksInShelves: [], // Contains books that are assigned to any shelf
   };
 
   componentDidMount() {
-    BooksAPI.getAll().then((books) => {
+    BooksAPI.getAll().then((booksInShelves) => {
       this.setState(() => ({
-        booksInShelfs: books,
+        booksInShelves,
       }));
     });
   }
@@ -36,38 +36,43 @@ class BooksApp extends React.Component {
   moveBook = (book, newShelfId) => {
     BooksAPI.update(book, newShelfId).then(() => {
       this.isShelf(newShelfId)
-        ? this.assignBookToShelf(book, newShelfId)
+        ? this.putBookInShelf(book, newShelfId)
         : this.removeBookFromShelves(book);
     });
   };
 
-  assignBookToShelf = (book, newShelfId) => {
+  putBookInShelf = (book, newShelfId) => {
     this.setState((prevState) => {
       const updatedBook = { ...book }; // Clone book to not modify state directly
       updatedBook.shelf = newShelfId;
-      return prevState.booksInShelfs
-        .filter((b) => b.id !== updatedBook.id)
-        .concat(updatedBook);
+      return {
+        booksInShelves: prevState.booksInShelves
+          .filter((b) => b.id !== updatedBook.id)
+          .concat(updatedBook),
+      };
     });
   };
 
   removeBookFromShelves = (book) => {
     this.setState((prevState) => {
-      return prevState.booksInShelfs.filter((b) => b.id !== book.id);
+      return {
+        booksInShelves: prevState.booksInShelves.filter(
+          (b) => b.id !== book.id
+        ),
+      };
     });
   };
 
   getBooksByShelf = (shelfId) => {
-    const { booksInShelfs } = this.state;
-    return booksInShelfs.filter((book) => book.shelf === shelfId);
+    return this.state.booksInShelves.filter((b) => b.shelf === shelfId);
   };
 
   isShelf = (shelfId) => {
-    return shelfList.map((shelf) => shelf.id).includes(shelfId);
+    return shelves.map((shelf) => shelf.id).includes(shelfId);
   };
 
   render() {
-    const { booksInShelfs } = this.state;
+    const { booksInShelves } = this.state;
 
     return (
       <div className="app">
@@ -81,13 +86,12 @@ class BooksApp extends React.Component {
               </div>
               <div className="list-books-content">
                 <div>
-                  {shelfList.map((shelf) => (
+                  {shelves.map((shelf) => (
                     <Shelf
                       key={shelf.id}
                       shelf={shelf}
-                      shelfList={shelfList}
-                      booksThisShelf={this.getBooksByShelf(shelf.id)}
-                      booksAnyShelf={booksInShelfs}
+                      shelves={shelves}
+                      books={this.getBooksByShelf(shelf.id)}
                       onBookMove={this.moveBook}
                     />
                   ))}
@@ -105,8 +109,8 @@ class BooksApp extends React.Component {
           path="/search"
           render={() => (
             <Search
-              shelfList={shelfList}
-              booksAnyShelf={booksInShelfs}
+              shelves={shelves}
+              booksInShelves={booksInShelves}
               onBookMove={this.moveBook}
             />
           )}
