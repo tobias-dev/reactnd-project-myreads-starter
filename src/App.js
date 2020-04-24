@@ -22,7 +22,7 @@ const shelfList = [
 
 class BooksApp extends React.Component {
   state = {
-    booksInShelf: {}, // Contains books that are assigned to any shelf
+    booksAnyShelf: {}, // Contains books that are assigned to any shelf
   };
 
   componentDidMount() {
@@ -33,7 +33,7 @@ class BooksApp extends React.Component {
         booksWithId[book.id] = book;
       });
       this.setState(() => ({
-        booksInShelf: booksWithId,
+        booksAnyShelf: booksWithId,
       }));
     });
   }
@@ -44,17 +44,17 @@ class BooksApp extends React.Component {
         const bookId = book.id;
         book.shelf = newShelfId; // Update shelf
         this.isShelf(newShelfId)
-          ? (prevState.booksInShelf[bookId] = book) // Updated or new book
-          : delete prevState.booksInShelf.bookId; // Delete book if not in shelf anymore
+          ? (prevState.booksAnyShelf[bookId] = book) // Updated or new book
+          : delete prevState.booksAnyShelf.bookId; // Delete book if not in shelf anymore
         return prevState;
       });
     });
   };
 
   getBooksByShelf = (shelfId) => {
-    const { booksInShelf } = this.state;
-    return Object.keys(booksInShelf)
-      .map((bookId) => booksInShelf[bookId])
+    const { booksAnyShelf } = this.state;
+    return Object.keys(booksAnyShelf)
+      .map((bookId) => booksAnyShelf[bookId])
       .filter((book) => book.shelf === shelfId);
   };
 
@@ -63,7 +63,7 @@ class BooksApp extends React.Component {
   };
 
   render() {
-    const { booksInShelf } = this.state;
+    const { booksAnyShelf } = this.state;
 
     return (
       <div className="app">
@@ -83,7 +83,7 @@ class BooksApp extends React.Component {
                       shelf={shelf}
                       shelfList={shelfList}
                       booksThisShelf={this.getBooksByShelf(shelf.id)}
-                      booksAnyShelf={booksInShelf}
+                      booksAnyShelf={booksAnyShelf}
                       onBookMove={this.moveBook}
                     />
                   ))}
@@ -102,7 +102,7 @@ class BooksApp extends React.Component {
           render={() => (
             <Search
               shelfList={shelfList}
-              booksAnyShelf={booksInShelf}
+              booksAnyShelf={booksAnyShelf}
               onBookMove={this.moveBook}
             />
           )}
