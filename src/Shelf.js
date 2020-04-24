@@ -37,7 +37,7 @@ Shelf.propTypes = {
   shelf: PropTypes.object.isRequired,
   shelfList: PropTypes.array.isRequired,
   booksThisShelf: PropTypes.array.isRequired,
-  booksAnyShelf: PropTypes.object.isRequired,
+  booksAnyShelf: PropTypes.array.isRequired,
   onBookMove: PropTypes.func.isRequired,
 };
 

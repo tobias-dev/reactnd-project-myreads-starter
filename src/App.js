@@ -22,40 +22,44 @@ const shelfList = [
 
 class BooksApp extends React.Component {
   state = {
-    booksAnyShelf: {}, // Contains books that are assigned to any shelf
+    booksInShelfs: [], // Contains books that are assigned to any shelf
   };
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-      // Store books with IDs as keys, so that they can be easily accessed by ID
-      const booksWithId = {};
-      books.forEach((book) => {
-        booksWithId[book.id] = book;
-      });
       this.setState(() => ({
-        booksAnyShelf: booksWithId,
+        booksInShelfs: books,
       }));
     });
   }
 
   moveBook = (book, newShelfId) => {
     BooksAPI.update(book, newShelfId).then(() => {
-      this.setState((prevState) => {
-        const bookId = book.id;
-        book.shelf = newShelfId; // Update shelf
-        this.isShelf(newShelfId)
-          ? (prevState.booksAnyShelf[bookId] = book) // Updated or new book
-          : delete prevState.booksAnyShelf.bookId; // Delete book if not in shelf anymore
-        return prevState;
-      });
+      this.isShelf(newShelfId)
+        ? this.assignBookToShelf(book, newShelfId)
+        : this.removeBookFromShelves(book);
+    });
+  };
+
+  assignBookToShelf = (book, newShelfId) => {
+    this.setState((prevState) => {
+      const updatedBook = { ...book }; // Clone book to not modify state directly
+      updatedBook.shelf = newShelfId;
+      return prevState.booksInShelfs
+        .filter((b) => b.id !== updatedBook.id)
+        .concat(updatedBook);
+    });
+  };
+
+  removeBookFromShelves = (book) => {
+    this.setState((prevState) => {
+      return prevState.booksInShelfs.filter((b) => b.id !== book.id);
     });
   };
 
   getBooksByShelf = (shelfId) => {
-    const { booksAnyShelf } = this.state;
-    return Object.keys(booksAnyShelf)
-      .map((bookId) => booksAnyShelf[bookId])
-      .filter((book) => book.shelf === shelfId);
+    const { booksInShelfs } = this.state;
+    return booksInShelfs.filter((book) => book.shelf === shelfId);
   };
 
   isShelf = (shelfId) => {
@@ -63,7 +67,7 @@ class BooksApp extends React.Component {
   };
 
   render() {
-    const { booksAnyShelf } = this.state;
+    const { booksInShelfs } = this.state;
 
     return (
       <div className="app">
@@ -83,7 +87,7 @@ class BooksApp extends React.Component {
                       shelf={shelf}
                       shelfList={shelfList}
                       booksThisShelf={this.getBooksByShelf(shelf.id)}
-                      booksAnyShelf={booksAnyShelf}
+                      booksAnyShelf={booksInShelfs}
                       onBookMove={this.moveBook}
                     />
                   ))}
@@ -102,7 +106,7 @@ class BooksApp extends React.Component {
           render={() => (
             <Search
               shelfList={shelfList}
-              booksAnyShelf={booksAnyShelf}
+              booksAnyShelf={booksInShelfs}
               onBookMove={this.moveBook}
             />
           )}

@@ -19,17 +19,17 @@ class Search extends Component {
         query,
       }),
       () => {
-        BooksAPI.search(query).then((books) => {
-          typeof books === 'undefined' || books.hasOwnProperty('error')
-            ? this.setState(() => ({
-                books: [],
-                hasSearchError: true,
-              }))
-            : this.setState(() => ({
-                books: books || [],
-                hasSearchError: false,
-              }));
-        });
+        let newSearchState = {
+          books: [],
+          hasSearchError: false,
+        };
+        query.length > 0 &&
+          BooksAPI.search(query).then((books) => {
+            typeof books === 'undefined' || books.hasOwnProperty('error')
+              ? (newSearchState.hasSearchError = true)
+              : (newSearchState.books = books || []);
+          });
+        this.setState(() => newSearchState);
       }
     );
   };
