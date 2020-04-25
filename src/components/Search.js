@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import * as BooksAPI from './BooksAPI';
+import * as BooksAPI from '../api/BooksAPI';
 import Books from './Books';
 import { DebounceInput } from 'react-debounce-input';
 import PropTypes from 'prop-types';
