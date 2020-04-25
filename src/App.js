@@ -42,34 +42,25 @@ class BooksApp extends React.Component {
   };
 
   putBookInShelf = (book, newShelfId) => {
-    this.setState((prevState) => {
-      const updatedBook = { ...book }; // Clone book to not modify directly
-      updatedBook.shelf = newShelfId;
-      return {
-        booksInShelves: prevState.booksInShelves
-          .filter((b) => b.id !== updatedBook.id)
-          .concat(updatedBook),
-      };
-    });
+    const updatedBook = { ...book }; // Clone book to not modify directly
+    updatedBook.shelf = newShelfId;
+    this.setState((prevState) => ({
+      booksInShelves: prevState.booksInShelves
+        .filter((b) => b.id !== updatedBook.id)
+        .concat(updatedBook),
+    }));
   };
 
   removeBookFromShelves = (book) => {
-    this.setState((prevState) => {
-      return {
-        booksInShelves: prevState.booksInShelves.filter(
-          (b) => b.id !== book.id
-        ),
-      };
-    });
+    this.setState((prevState) => ({
+      booksInShelves: prevState.booksInShelves.filter((b) => b.id !== book.id),
+    }));
   };
 
-  isShelf = (shelfId) => {
-    return shelves.map((shelf) => shelf.id).includes(shelfId);
-  };
+  isShelf = (shelfId) => shelves.map((shelf) => shelf.id).includes(shelfId);
 
-  getBooksByShelf = (shelf) => {
-    return this.state.booksInShelves.filter((b) => b.shelf === shelf.id);
-  };
+  getBooksByShelf = (shelf) =>
+    this.state.booksInShelves.filter((b) => b.shelf === shelf.id);
 
   render() {
     const shelvesWithBooks = shelves.map((shelf) => ({
