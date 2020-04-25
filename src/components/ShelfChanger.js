@@ -18,12 +18,12 @@ const ShelfChanger = (props) => {
     const shelf = shelves.find((shelf) =>
       shelf.books.find((b) => b.id === book.id)
     );
-    return (shelf && shelf.id) || noShelf.id;
+    return shelf || noShelf;
   };
 
   return (
     <div className="book-shelf-changer">
-      <select value={getShelf(book)} onChange={handleShelfChange}>
+      <select value={getShelf(book).id} onChange={handleShelfChange}>
         {shelves.map((shelf) => {
           return (
             <option key={shelf.id} value={shelf.id}>
