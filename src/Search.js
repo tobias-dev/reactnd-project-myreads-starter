@@ -30,14 +30,11 @@ class Search extends Component {
   };
 
   performSearch = (query) => {
-    BooksAPI.search(query).then((searchedBooks) => {
-      const isValidSearch =
-        typeof searchedBooks !== 'undefined' &&
-        !searchedBooks.hasOwnProperty('error');
-      if (isValidSearch) {
+    BooksAPI.search(query).then((searchedBooks = []) => {
+      if (!searchedBooks.hasOwnProperty('error')) {
         this.mapBooksToShelves(searchedBooks);
         this.setState(() => ({
-          searchedBooks: searchedBooks || [],
+          searchedBooks: searchedBooks,
           hasSearchError: false,
         }));
       } else {
@@ -74,7 +71,7 @@ class Search extends Component {
               type="text"
               placeholder="Search by title or author"
               value={query}
-              debounceTimeout={150}
+              debounceTimeout={250}
               className={hasSearchError ? 'error' : ''}
               onChange={this.handleSearch}
             />
