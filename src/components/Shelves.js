@@ -4,11 +4,7 @@ import Shelf from './Shelf';
 import PropTypes from 'prop-types';
 
 const Shelves = (props) => {
-  const { books, shelves, onBookMove } = props;
-
-  const getBooksByShelf = (shelfId) => {
-    return books.filter((b) => b.shelf === shelfId);
-  };
+  const { shelves, onBookMove } = props;
 
   return (
     <div className="list-books">
@@ -22,7 +18,6 @@ const Shelves = (props) => {
               key={shelf.id}
               shelf={shelf}
               shelves={shelves}
-              books={getBooksByShelf(shelf.id)}
               onBookMove={onBookMove}
             />
           ))}
@@ -38,7 +33,6 @@ const Shelves = (props) => {
 };
 
 Shelves.propTypes = {
-  books: PropTypes.array.isRequired,
   shelves: PropTypes.array.isRequired,
   onBookMove: PropTypes.func.isRequired,
 };

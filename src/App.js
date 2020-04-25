@@ -43,7 +43,7 @@ class BooksApp extends React.Component {
 
   putBookInShelf = (book, newShelfId) => {
     this.setState((prevState) => {
-      const updatedBook = { ...book }; // Clone book to not modify state directly
+      const updatedBook = { ...book }; // Clone book to not modify directly
       updatedBook.shelf = newShelfId;
       return {
         booksInShelves: prevState.booksInShelves
@@ -67,8 +67,15 @@ class BooksApp extends React.Component {
     return shelves.map((shelf) => shelf.id).includes(shelfId);
   };
 
+  getBooksByShelf = (shelf) => {
+    return this.state.booksInShelves.filter((b) => b.shelf === shelf.id);
+  };
+
   render() {
-    const { booksInShelves } = this.state;
+    const shelvesWithBooks = shelves.map((shelf) => ({
+      ...shelf,
+      ...{ books: this.getBooksByShelf(shelf) },
+    })); // Map books to shelves
 
     return (
       <div className="app">
@@ -76,21 +83,13 @@ class BooksApp extends React.Component {
           exact
           path="/"
           render={() => (
-            <Shelves
-              shelves={shelves}
-              books={booksInShelves}
-              onBookMove={this.moveBook}
-            />
+            <Shelves shelves={shelvesWithBooks} onBookMove={this.moveBook} />
           )}
         />
         <Route
           path="/search"
           render={() => (
-            <Search
-              shelves={shelves}
-              booksInShelves={booksInShelves}
-              onBookMove={this.moveBook}
-            />
+            <Search shelves={shelvesWithBooks} onBookMove={this.moveBook} />
           )}
         />
       </div>

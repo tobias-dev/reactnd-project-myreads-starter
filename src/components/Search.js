@@ -32,7 +32,6 @@ class Search extends Component {
   performSearch = (query) => {
     BooksAPI.search(query).then((searchedBooks = []) => {
       if (!searchedBooks.hasOwnProperty('error')) {
-        this.mapBooksToShelves(searchedBooks);
         this.setState(() => ({
           searchedBooks: searchedBooks,
           hasSearchError: false,
@@ -44,16 +43,6 @@ class Search extends Component {
         }));
       }
     });
-  };
-
-  mapBooksToShelves = (searchedBooks) => {
-    const { booksInShelves } = this.props;
-    // Searched books don't contain shelf attributes, so map them
-    booksInShelves.map((bookInShelf) =>
-      searchedBooks
-        .filter((searchedBook) => searchedBook.id === bookInShelf.id)
-        .map((searchedBook) => (searchedBook.shelf = bookInShelf.shelf))
-    );
   };
 
   render() {
@@ -93,7 +82,6 @@ class Search extends Component {
 
 Search.propTypes = {
   shelves: PropTypes.array.isRequired,
-  booksInShelves: PropTypes.array.isRequired,
   onBookMove: PropTypes.func.isRequired,
 };
 

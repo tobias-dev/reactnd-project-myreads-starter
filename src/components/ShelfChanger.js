@@ -14,9 +14,16 @@ const ShelfChanger = (props) => {
     onBookMove(book, shelfId);
   };
 
+  const getShelf = (book) => {
+    const shelf = shelves.find((shelf) =>
+      shelf.books.find((b) => b.id === book.id)
+    );
+    return (shelf && shelf.id) || noShelf.id;
+  };
+
   return (
     <div className="book-shelf-changer">
-      <select value={book.shelf || noShelf.id} onChange={handleShelfChange}>
+      <select value={getShelf(book)} onChange={handleShelfChange}>
         {shelves.map((shelf) => {
           return (
             <option key={shelf.id} value={shelf.id}>
