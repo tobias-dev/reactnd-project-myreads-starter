@@ -24,13 +24,11 @@ const ShelfChanger = (props) => {
         value={(getShelf(book) || noShelf).id}
         onChange={handleShelfChange}
       >
-        {shelves.map((shelf) => {
-          return (
-            <option key={shelf.id} value={shelf.id}>
-              {shelf.label}
-            </option>
-          );
-        })}
+        {shelves.map((shelf) => (
+          <option key={shelf.id} value={shelf.id}>
+            {shelf.label}
+          </option>
+        ))}
         <option value={noShelf.id}>{noShelf.label}</option>
       </select>
     </div>
