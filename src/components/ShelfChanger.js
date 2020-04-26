@@ -15,15 +15,15 @@ const ShelfChanger = (props) => {
   };
 
   const getShelf = (book) => {
-    const shelf = shelves.find((shelf) =>
-      shelf.books.find((b) => b.id === book.id)
-    );
-    return shelf || noShelf;
+    shelves.find((shelf) => shelf.books.find((b) => b.id === book.id));
   };
 
   return (
     <div className="book-shelf-changer">
-      <select value={getShelf(book).id} onChange={handleShelfChange}>
+      <select
+        value={(getShelf(book) || noShelf).id}
+        onChange={handleShelfChange}
+      >
         {shelves.map((shelf) => {
           return (
             <option key={shelf.id} value={shelf.id}>

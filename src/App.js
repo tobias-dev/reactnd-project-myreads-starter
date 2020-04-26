@@ -57,16 +57,19 @@ class BooksApp extends React.Component {
     }));
   };
 
-  isShelf = (shelfId) => shelves.map((shelf) => shelf.id).includes(shelfId);
+  isShelf = (shelfId) => {
+    shelves.map((shelf) => shelf.id).includes(shelfId);
+  };
 
-  getBooksByShelf = (shelf) =>
+  getBooksByShelf = (shelf) => {
     this.state.booksInShelves.filter((b) => b.shelf === shelf.id);
+  };
 
   render() {
     const shelvesWithBooks = shelves.map((shelf) => ({
       ...shelf,
       ...{ books: this.getBooksByShelf(shelf) },
-    })); // Map books to shelves
+    })); // Map books to shelves to easily pass down as one prop
 
     return (
       <div className="app">
