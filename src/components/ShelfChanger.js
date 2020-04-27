@@ -14,9 +14,8 @@ const ShelfChanger = (props) => {
     onBookMove(book, shelfId);
   };
 
-  const getShelf = (book) => {
+  const getShelf = (book) =>
     shelves.find((shelf) => shelf.books.find((b) => b.id === book.id));
-  };
 
   return (
     <div className="book-shelf-changer">
