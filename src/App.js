@@ -69,7 +69,7 @@ class BooksApp extends React.Component {
     const shelvesWithBooks = shelves.map((shelf) => ({
       ...shelf,
       ...{ books: this.getBooksByShelf(shelf) },
-    })); // Map books to shelves to easily pass down as one prop
+    })); // Map books to shelves to easily pass to components as one prop
 
     return (
       <div className="app">
