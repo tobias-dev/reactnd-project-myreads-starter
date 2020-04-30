@@ -78,6 +78,7 @@ class BooksApp extends React.Component {
           )}
         />
         <Route
+          exact
           path="/search"
           render={() => (
             <Search shelves={shelvesWithBooks} onBookMove={this.moveBook} />
